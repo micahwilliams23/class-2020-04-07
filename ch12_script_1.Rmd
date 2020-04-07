@@ -20,19 +20,63 @@ Today's class will be based on [Chapter 12: "Multiple Regression"](https://david
 
 **Prompt:** Recall the three common steps of exploring a new dataset: 1) looking at the raw data, 2) computing summary statistics, and 3) creating visualizations of the data. Start this process. Useful commands to use here: `glimpse()`,`sample_n`, and `skim` (from the skimr package). What observations are surprising? (Hints: Look at extremes, especially for the key variable you are interested in. Hint at the data for the schools you know.)  
 
+```{r}
+x %>% skim()
+```
+
+
 ### Scene 2
 
 **Prompt:** What's the correlation between the average faculty salary in 2001 and the median income of students 10 years after entering? What's the correlation between the average SAT scores in 2001 and the median income of students 10 years after entering? Find these by doing two separate correlations first, and then making a correlation matrix (instructions in the book). 
+
+```{r}
+x %>%
+  summarize(cor_facultysalary = cor(faculty, earnings),
+            cor_avgSAT = cor(sat, earnings))
+
+x %>%
+  select(faculty, sat, earnings) %>%
+  cor()
+```
 
 
 ### Scene 3
 
 **Prompt:** Visualize the relationships between the outcome variable (`earnings`) and the two key numerical explanatory variables (`faculty` and `sat`), one at a time. Create a ggplot for each showing the line of best fit.
 
+```{r}
+x %>%
+  ggplot(aes(faculty, earnings)) +
+  geom_smooth(method = lm, se = F) +
+  geom_point() +
+  labs(title = 'Student Earnings vs. Faculty Salary')
+
+x %>%
+  ggplot(aes(sat, earnings)) +
+  geom_smooth(method = lm, se = F) +
+  geom_point() +
+  labs(title = 'Student Earnings vs. Average SAT Score')
+```
+
+
 
 ### Scene 4
 
 **Prompt:** Now let's quantify these relationships between the two explanatory variables and the outcome variable. Fit a multiple regression model for `earnings` using `sat` and `faculty` as the explanatory variables. Write a bullet point interpreting each of the three values in the estimate column. Do not use any interaction terms in the regression (yet).
+
+```{r}
+tidy(lm(earnings ~ faculty + sat, data = x), conf.int = T) %>%
+  select(-c(statistic, p.value))
+```
+
+Coefficients: 
+- The estimated earning for a school with average faculty salary = 0 and average sat = 0 is $-2590.98$.
+
+faculty:
+- A one point increase in average faculty salary increases average earnings by $\$0.3854$
+
+sat:
+- A one point increase in average SAT score increases average earnings by $\$24.4804$
 
 
 ### Scene 5
@@ -44,6 +88,9 @@ Today's class will be based on [Chapter 12: "Multiple Regression"](https://david
 
 **Prompt:** Imagine that you are the university president. There's a global pandemic that is causing serious financial damage to the school endowment, and in response, you want to cut the financial aid budget. However, because many academically talented students will go to whichever school gives them the best financial aid package, slashing the financial aid budget will cause the average SAT score to decrease from 1400 to 1300. Apply the Rubin Causal Model to frame the causal effect of this policy change on the median earnings of students 10 years from now. Write down the units, the treatments, and the outcomes. Define the causal effect of the policy change on median earnings. What is the fundamental problem of causal inference? What must you assume for this causal model to make a causal claim?
 
+units: universities
+treatment: average SAT score
+outcomes: median income
 
 ### Scene 7
 
