@@ -31,8 +31,9 @@ x %>%
   skim()
 
 x %>% 
-  arrange(desc(sat)) %>% 
-  print(n = 15)
+  arrange(desc(earnings)) %>% 
+  print(n = 15) %>% 
+  select(name, earnings)
 ```
 
 
@@ -78,6 +79,14 @@ x %>%
 
 **Prompt:** Now let's quantify these relationships between the two explanatory variables and the outcome variable. Fit a multiple regression model for `earnings` using `sat` and `faculty` as the explanatory variables. Write a bullet point interpreting each of the three values in the estimate column. Do not use any interaction terms in the regression (yet).
 
+```{r}
+model_1 <- lm(earnings ~ sat + faculty, data = x) 
+
+model_1 %>% 
+  tidy(conf.int = TRUE) %>% 
+  select(term, estimate, conf.low, conf.high)
+```
+
 
 ### Scene 5
 
@@ -87,6 +96,14 @@ x %>%
 ### Scene 6
 
 **Prompt:** Imagine that you are the university president. There's a global pandemic that is causing serious financial damage to the school endowment, and in response, you want to cut the financial aid budget. However, because many academically talented students will go to whichever school gives them the best financial aid package, slashing the financial aid budget will cause the average SAT score to decrease from 1400 to 1300. Apply the Rubin Causal Model to frame the causal effect of this policy change on the median earnings of students 10 years from now. Write down the units, the treatments, and the outcomes. Define the causal effect of the policy change on median earnings. What is the fundamental problem of causal inference? What must you assume for this causal model to make a causal claim?
+
+Answers:
+
+- Units = school/college
+
+- Treatment = average SAT score (or is the treatment a change in financial aid policy, with control being the current policy?)
+
+- Outcome = median earnings of students 10 years after they enter college
 
 
 ### Scene 7

@@ -384,13 +384,13 @@ summary {
 <pre class="r"><code>x %&gt;% 
   sample_n(size = 5)</code></pre>
 <pre><code>## # A tibble: 5 x 8
-##   name                tier tier_name         public earnings   sat faculty price
-##   &lt;chr&gt;              &lt;dbl&gt; &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1 Bentley University     4 Highly selective…      0    74900  1145  78653. 18910
-## 2 Alfred University      6 Selective private      0    42300  1074  54845. 19158
-## 3 University Of San…     6 Selective private      0    61000  1100  75624. 19060
-## 4 Lebanon Valley Co…     6 Selective private      0    46100  1095  51379. 18420
-## 5 Babson College         4 Highly selective…      0    85500  1250  92702. 21952</code></pre>
+##   name                  tier tier_name      public earnings   sat faculty  price
+##   &lt;chr&gt;                &lt;dbl&gt; &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1 State University Of…     3 Highly select…      1    55500 1144   75404.  4253 
+## 2 Smith College            4 Highly select…      0    42700 1265   77874. 23584 
+## 3 Western Connecticut…     5 Selective pub…      1    43300  945   67056.  3910 
+## 4 King University          6 Selective pri…      0    39700 1051   38304. 12700 
+## 5 Webber Internationa…     6 Selective pri…      0    35800  948.  33126. 12431.</code></pre>
 <pre class="r"><code>x %&gt;% 
   select(faculty, sat, earnings) %&gt;% 
   skim()</code></pre>
@@ -491,27 +491,42 @@ summary {
 </tbody>
 </table>
 <pre class="r"><code>x %&gt;% 
-  arrange(desc(sat)) %&gt;% 
-  print(n = 15)</code></pre>
+  arrange(desc(earnings)) %&gt;% 
+  print(n = 15) %&gt;% 
+  select(name, earnings)</code></pre>
 <pre><code>## # A tibble: 797 x 8
 ##    name              tier tier_name          public earnings   sat faculty price
 ##    &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-##  1 California Inst…     2 Other elite schoo…      0    74000  1520 107835. 19959
-##  2 Harvard Univers…     1 Ivy Plus                0    87200  1485 116117. 25128
-##  3 Massachusetts I…     1 Ivy Plus                0    91600  1485 100796. 26746
-##  4 Harvey Mudd Col…     2 Other elite schoo…      0    78600  1465  79932. 23187
-##  5 Stanford Univer…     1 Ivy Plus                0    80900  1455 111190. 24622
-##  6 Swarthmore Coll…     2 Other elite schoo…      0    49400  1445  84543. 25200
-##  7 Pomona College       2 Other elite schoo…      0    52600  1440  80379. 24170
-##  8 Dartmouth Colle…     1 Ivy Plus                0    67100  1425  88192. 25653
-##  9 Rice University      2 Other elite schoo…      0    59900  1420  90284. 15932
-## 10 Amherst College      2 Other elite schoo…      0    56800  1415  89014  26080
-## 11 Williams College     2 Other elite schoo…      0    58100  1410  80419. 24740
-## 12 Yale University      1 Ivy Plus                0    66000  1405  96146. 25220
-## 13 Cornell Univers…     1 Ivy Plus                0    70900  1400  88464. 24850
-## 14 University Of C…     1 Ivy Plus                0    62800  1400  97168. 25239
-## 15 University Of P…     1 Ivy Plus                0    78200  1400 107547. 25170
+##  1 MCPHS University     8 Nonselective four…      0   116400 1176   57745. 17343
+##  2 Saint Louis Col…     8 Nonselective four…      0   111600 1206.  55336. 13395
+##  3 Massachusetts I…     1 Ivy Plus                0    91600 1485  100796. 26746
+##  4 Harvard Univers…     1 Ivy Plus                0    87200 1485  116117. 25128
+##  5 University Of T…     6 Selective private       0    85800 1095   56004. 16132
+##  6 Babson College       4 Highly selective …      0    85500 1250   92702. 21952
+##  7 Georgetown Univ…     2 Other elite schoo…      0    83300 1375   83992. 24168
+##  8 Rensselaer Poly…     2 Other elite schoo…      0    81700 1315   74392. 24225
+##  9 California Mari…     5 Selective public        1    81100 1080   59491.  2138
+## 10 Stanford Univer…     1 Ivy Plus                0    80900 1455  111190. 24622
+## 11 Massachusetts M…     5 Selective public        1    79500 1055   56382.  4016
+## 12 Rose - Hulman I…     2 Other elite schoo…      0    78900 1285   70743. 20844
+## 13 Harvey Mudd Col…     2 Other elite schoo…      0    78600 1465   79932. 23187
+## 14 University Of P…     1 Ivy Plus                0    78200 1400  107547. 25170
+## 15 Washington And …     2 Other elite schoo…      0    77600 1340   81030. 17965
 ## # … with 782 more rows</code></pre>
+<pre><code>## # A tibble: 797 x 2
+##    name                                       earnings
+##    &lt;chr&gt;                                         &lt;dbl&gt;
+##  1 MCPHS University                             116400
+##  2 Saint Louis College Of Pharmacy              111600
+##  3 Massachusetts Institute Of Technology         91600
+##  4 Harvard University                            87200
+##  5 University Of The Sciences In Philadelphia    85800
+##  6 Babson College                                85500
+##  7 Georgetown University                         83300
+##  8 Rensselaer Polytechnic Institute              81700
+##  9 California Maritime Academy                   81100
+## 10 Stanford University                           80900
+## # … with 787 more rows</code></pre>
 </div>
 <div id="scene-2" class="section level3">
 <h3>Scene 2</h3>
@@ -559,6 +574,17 @@ x %&gt;%
 <div id="scene-4" class="section level3">
 <h3>Scene 4</h3>
 <p><strong>Prompt:</strong> Now let’s quantify these relationships between the two explanatory variables and the outcome variable. Fit a multiple regression model for <code>earnings</code> using <code>sat</code> and <code>faculty</code> as the explanatory variables. Write a bullet point interpreting each of the three values in the estimate column. Do not use any interaction terms in the regression (yet).</p>
+<pre class="r"><code>model_1 &lt;- lm(earnings ~ sat + faculty, data = x) 
+
+model_1 %&gt;% 
+  tidy(conf.int = TRUE) %&gt;% 
+  select(term, estimate, conf.low, conf.high)</code></pre>
+<pre><code>## # A tibble: 3 x 4
+##   term         estimate  conf.low conf.high
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept) -2591.    -7092.     1910.   
+## 2 sat            24.5      19.2      29.7  
+## 3 faculty         0.385     0.335     0.436</code></pre>
 </div>
 <div id="scene-5" class="section level3">
 <h3>Scene 5</h3>
@@ -567,6 +593,12 @@ x %&gt;%
 <div id="scene-6" class="section level3">
 <h3>Scene 6</h3>
 <p><strong>Prompt:</strong> Imagine that you are the university president. There’s a global pandemic that is causing serious financial damage to the school endowment, and in response, you want to cut the financial aid budget. However, because many academically talented students will go to whichever school gives them the best financial aid package, slashing the financial aid budget will cause the average SAT score to decrease from 1400 to 1300. Apply the Rubin Causal Model to frame the causal effect of this policy change on the median earnings of students 10 years from now. Write down the units, the treatments, and the outcomes. Define the causal effect of the policy change on median earnings. What is the fundamental problem of causal inference? What must you assume for this causal model to make a causal claim?</p>
+<p>Answers:</p>
+<ul>
+<li><p>Units = school/college</p></li>
+<li><p>Treatment = average SAT score (or is the treatment a change in financial aid policy, with control being the current policy?)</p></li>
+<li><p>Outcome = median earnings of students 10 years after they enter college</p></li>
+</ul>
 </div>
 <div id="scene-7" class="section level3">
 <h3>Scene 7</h3>
