@@ -65,7 +65,9 @@ x %>%
 **Prompt:** Now let's quantify these relationships between the two explanatory variables and the outcome variable. Fit a multiple regression model for `earnings` using `sat` and `faculty` as the explanatory variables. Write a bullet point interpreting each of the three values in the estimate column. Do not use any interaction terms in the regression (yet).
 
 ```{r}
-tidy(lm(earnings ~ faculty + sat, data = x), conf.int = T) %>%
+earnings_model <- lm(earnings ~ faculty + sat, data = x)
+
+tidy(earnings_model, conf.int = T) %>%
   select(-c(statistic, p.value))
 ```
 
@@ -96,11 +98,28 @@ outcomes: median income
 
 **Prompt:** Recall the model we made in Scene 4. Use that model to make a prediction. Consider a school with average faculty salary of $50,000 and average SAT of 1400. What would the the median student's earnings be 10 years from now? Although there are fancier ways of doing this in R --- check out the `predict()` function --- you should use the simple approach of using the regression estimates and then plugging in the appropriate values. Then, what would happen if a change in financial aid were to drop the average SAT score to 1300? What would you forecast earnings to be in that case? Putting the two together: What is the causal effect of the drop in SAT? Do you believe that? That is, if you were the university president, would you believe that forecast?
 
+```{r}
+earning_preds <- predict(earnings_model, 
+                         newdata = data.frame(faculty = 50000, sat = c(1400, 1300)))
+
+tibble(avg_1400 = earning_preds[1], 
+       avg_1300 = earning_preds[2], 
+       effect = avg_1400-avg_1300)
+```
+
+
 
 ### Scene 8
 
 **Prompt:** Now that we have our regression model using two numerical explanatory variables, let's find the fitted values and residuals for the model using `augment()`. What do the fitted values and residuals mean, in terms of where they appear in a fitted line graph? Take a look at the biggest residuals, both positive and negative. What causes them? What is the model missing? How might we improve the model?
 
+```{r}
+earnings_model %>% 
+  augment() %>%
+  filter(.resid %in% c(max(.resid), min(.resid))) %>%
+  left_join(x, by = c('faculty', 'sat', 'earnings')) %>%
+  select(earnings:.resid, name:tier_name)
+```
 
 
 ### Scene 9
