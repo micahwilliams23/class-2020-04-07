@@ -20,15 +20,59 @@ Today's class will be based on [Chapter 12: "Multiple Regression"](https://david
 
 **Prompt:** Recall the three common steps of exploring a new dataset: 1) looking at the raw data, 2) computing summary statistics, and 3) creating visualizations of the data. Start this process. Useful commands to use here: `glimpse()`,`sample_n`, and `skim` (from the skimr package). What observations are surprising? (Hints: Look at extremes, especially for the key variable you are interested in. Hint at the data for the schools you know.)  
 
+```{r}
+glimpse(x)
+
+x %>% 
+  sample_n(size = 5)
+
+x %>% 
+  select(faculty, sat, earnings) %>% 
+  skim()
+
+x %>% 
+  arrange(desc(sat)) %>% 
+  print(n = 15)
+```
+
+
 ### Scene 2
 
 **Prompt:** What's the correlation between the average faculty salary in 2001 and the median income of students 10 years after entering? What's the correlation between the average SAT scores in 2001 and the median income of students 10 years after entering? Find these by doing two separate correlations first, and then making a correlation matrix (instructions in the book). 
 
+```{r}
+# finding correlations using separate correlations
+
+x %>% 
+  summarize(correlation = cor(faculty, earnings))
+
+x %>% 
+  summarize(correlation = cor(sat, earnings))
+
+# finding correlations using a correlation matrix
+
+x %>% 
+  select(faculty, sat, earnings) %>% 
+  cor()
+```
 
 ### Scene 3
 
 **Prompt:** Visualize the relationships between the outcome variable (`earnings`) and the two key numerical explanatory variables (`faculty` and `sat`), one at a time. Create a ggplot for each showing the line of best fit.
 
+```{r}
+x %>%
+  ggplot(aes(x = faculty, y = earnings)) +
+  geom_point() +
+  labs(x = "Average Faculty Salary", y = "Median Earnings of Students") +
+  geom_smooth(method = "lm", se = FALSE)
+
+x %>%
+  ggplot(aes(x = sat, y = earnings)) +
+  geom_point() +
+  labs(x = "Average SAT scores in 2001", y = "Median Earnings of Students") +
+  geom_smooth(method = "lm", se = FALSE)
+```
 
 ### Scene 4
 
